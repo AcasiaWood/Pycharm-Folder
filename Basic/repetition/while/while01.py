@@ -29,7 +29,7 @@ while True:
         enqueue(num)
     if input_str == "de":
         dequeue()
-
+        
 while True:
     a = input()
     control = input()
@@ -42,7 +42,7 @@ while True:
     time.sleep(1)
     number = number * save
     print(number)
-
+    
     while not gameExit:
 
         print(x, y)
@@ -100,7 +100,7 @@ while True:
 
         pygame.display.update()
         clock.tick(60)
-
+        
 while True:
     print("")
     unit1.health = 100
@@ -210,10 +210,3 @@ while True:
                 print("----------------------")
                 print("")
                 print("Not Enough Cash")
-
-while True:
-    i = i + 1
-    print(i)
-    if i == a[len(a)-1]:
-        break
-print("complete")

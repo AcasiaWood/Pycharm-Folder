@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dd804292-e6d3-4725-9feb-c51e6fe82500" name="Default Changelist" comment="" />
+    <list default="true" id="dd804292-e6d3-4725-9feb-c51e6fe82500" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Basic/repetition/while/while01.py" beforeDir="false" afterPath="$PROJECT_DIR$/Basic/repetition/while/while01.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,8 +33,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Basic/repetition/while/while01.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4262">
-              <caret line="216" column="5" selection-start-line="216" selection-start-column="5" selection-end-line="217" selection-end-column="13" />
+            <state relative-caret-position="11">
+              <caret line="211" column="40" selection-start-line="211" selection-start-column="40" selection-end-line="211" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -73,7 +75,6 @@
         <option value="$PROJECT_DIR$/Python24.py" />
         <option value="$PROJECT_DIR$/Python22.py" />
         <option value="$PROJECT_DIR$/Python14.py" />
-        <option value="$PROJECT_DIR$/Basic/repetition/while/while01.py" />
         <option value="$PROJECT_DIR$/Python11.py" />
         <option value="$PROJECT_DIR$/Data_Structure/Stack/stack01.py" />
         <option value="$PROJECT_DIR$/Basic/if/if_01.py" />
@@ -81,12 +82,12 @@
         <option value="$PROJECT_DIR$/Game/Tic-tac-toe/tictactoe01.py" />
         <option value="$PROJECT_DIR$/Game/Car/car01.py" />
         <option value="$PROJECT_DIR$/Basic/function/function_01.py" />
+        <option value="$PROJECT_DIR$/Basic/repetition/while/while01.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="475" />
-    <option name="y" value="188" />
+    <option name="x" value="-1" />
     <option name="width" value="1045" />
     <option name="height" value="506" />
   </component>
@@ -107,6 +108,12 @@
               <item name="Pycharm01" type="b2602c69:ProjectViewProjectNode" />
               <item name="Pycharm01" type="462c0819:PsiDirectoryNode" />
               <item name="Basic" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Pycharm01" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Pycharm01" type="462c0819:PsiDirectoryNode" />
+              <item name="Basic" type="462c0819:PsiDirectoryNode" />
+              <item name="list" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -190,17 +197,24 @@
       <option name="project" value="LOCAL" />
       <updated>1572768244724</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add all file">
+      <created>1572768708827</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1572768708827</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="0" width="1922" height="1053" extended-state="6" />
+    <frame x="841" y="209" width="1045" height="506" extended-state="0" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.24894737" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.4623656" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.4994737" visible="true" weight="0.32976446" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5005263" side_tool="true" visible="true" weight="0.32976446" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.7917889" visible="true" weight="0.79586565" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.20821114" side_tool="true" visible="true" weight="0.79586565" />
       <window_info anchor="bottom" id="Python Console" order="2" />
       <window_info anchor="bottom" id="Message" order="3" />
       <window_info anchor="bottom" id="Find" order="4" />
@@ -537,8 +551,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Basic/repetition/while/while01.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4262">
-          <caret line="216" column="5" selection-start-line="216" selection-start-column="5" selection-end-line="217" selection-end-column="13" />
+        <state relative-caret-position="11">
+          <caret line="211" column="40" selection-start-line="211" selection-start-column="40" selection-end-line="211" selection-end-column="40" />
         </state>
       </provider>
     </entry>
