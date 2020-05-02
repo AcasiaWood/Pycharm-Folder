@@ -1,0 +1,44 @@
+import urllib.request
+import json
+
+client_id = "v0FilY_ftOAf5GzBYWrm"
+client_secret = "P8YgCDMgLd"
+
+language = ["ko", "ja", "zh-cn", "zh-tw", "hi", "en", "es", "fr", "de", "pt", "vi", "id", "fa", "ar", "mm", "th", "ru", "it"]
+
+# 번역할 메모장 불러오기 (txt 형식)
+
+with open('source.txt', 'r', encoding='utf8') as f:
+    srcText = f.read()
+
+enter = input("Enter the Language : ")
+
+for i in range(0, len(language)):
+    if language[i] == enter:
+        print("Language Check Completed")
+
+# encText 변수에 저장하고, 메모장 언어는 한국어, 번역할 언어는 영어이다.
+
+encText = urllib.parse.quote(srcText)
+data = "source=ko&target="+enter+"&text=" + encText
+url = "https://openapi.naver.com/v1/papago/n2mt"
+request = urllib.request.Request(url)
+request.add_header("X-Naver-Client-Id", client_id)
+request.add_header("X-Naver-Client-Secret", client_secret)
+
+# 데이터 암호화, 불러온 것이 올바른지 틀린지 확인
+
+response = urllib.request.urlopen(request, data=data.encode("utf-8"))
+rescode = response.getcode()
+if rescode == 200:
+    response_body = response.read()
+
+    res = json.loads(response_body.decode('utf-8'))
+    from pprint import pprint
+    pprint(res)
+
+    with open('translate.txt', 'w', encoding='utf8') as f:
+        f.write(res['message']['result']['translatedText'])
+
+else:
+    print("Error Code:" + rescode)
