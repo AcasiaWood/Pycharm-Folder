@@ -1,0 +1,129 @@
+# BFS 01 (Maze)
+import queue
+x, y = 0, 0
+move = 1
+maze = [[1, 1, 0, 1, 1, 0], [1, 1, 0, 1, 1, 0], [1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 0, 1]]
+for i in range(len(maze)):
+    print(maze[i])
+arrow = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+a, b = 0, 0
+q = queue.Queue()
+q.put((0, 0, move))
+n, m = map(int, input().split())
+while q.empty() == False:
+    a, b, move = q.get()
+    for i in range(4):
+        x = a + arrow[i][0]
+        y = b + arrow[i][1]
+        if x == n-1 and y == m-1:
+            move = move+1
+            break
+        if x < len(maze) and y < len(maze[0]) and x >= 0 and y >= 0:
+            if maze[x][y] == 1:
+                maze[0][0] = 0
+                maze[x][y] = 0
+                q.put((x, y, move+1))
+print(move)
+
+# BFS 02 (Harvest Tomato)
+import queue
+width, height = map(int, input().split())
+farm = []
+arrow = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+save = []
+day = 0
+flag = 0
+q = queue.Queue()
+for i in range(height):
+    a = list(map(int, input().split()))
+    farm.append(a)
+for i in range(0, height):
+    for j in range(0, width):
+        if farm[i][j] == 1:
+            q.put((i, j, day))
+while q.empty() == False:
+    a, b, day = q.get()
+    for i in range(0, 4):
+        x = a + arrow[i][0]
+        y = b + arrow[i][1]
+        if x >= 0 and y >= 0 and x < len(farm) and y < len(farm[0]):
+            if farm[x][y] == 0:
+                farm[x][y] = 1
+                q.put((x, y, day+1))
+for i in range(0, height):
+    for j in range(0, width):
+        if farm[i][j] == 0:
+            flag = 1
+            break
+    if flag == 0:
+        print(day)
+        break
+    elif flag == 1:
+        print(-1)
+        break
+        
+# BFS 03 (Estate)
+# variable setting, arrow = [x, y]
+import queue
+estate = []
+estate_count = []
+estate_ = []
+arrow = [[0, 1], [1, 0], [-1, 0], [0, -1]]
+whole_estate = 0
+flag = 0
+leading = int(input())
+q = queue.Queue()
+a, b = 0, 0
+x, y = 0, 0
+# create estate
+for i in range(leading):
+    a = list(map(str, input().split()))
+    estate_.append(a)
+
+for i in range(leading):
+    estate.append([])
+print(estate_)
+for i in range(len(estate_[0][0])):
+    for j in range(leading):
+        estate[i].append(int(estate_[i][i][j]))
+        print(estate_[i][j])
+# first, find list item which was named number one. (flag variable)
+for i in range(0, len(estate)):
+    for j in range(0, len(estate[0])):
+        if estate[i][j] == 1:
+            q.put((i, j))
+            flag = 1
+            break
+    if flag == 1:
+        break
+# second, set x, y variable and keep these rules.
+# index is not out of range, index is not on the place where computer went.
+# index is not on the place where is number zero.
+# after work, find list item again. (above coding)
+count = 0
+while q.empty() == False:
+    a, b = q.get()
+    for k in range(0, len(arrow)):
+        x = a + arrow[k][0]
+        y = b + arrow[k][1]
+        if x < len(estate) and y < len(estate[0]) and x >= 0 and y >= 0:
+            if estate[x][y] == 1:
+                estate[x][y] = 0
+                count = count + 1
+                q.put((x, y))
+    if q.empty() == True:
+        flag = 0
+        estate_count.append(count)
+        count = 0
+        whole_estate = whole_estate + 1
+        for i in range(0, len(estate)):
+            for j in range(0, len(estate[0])):
+                if estate[i][j] == 1:
+                    q.put((i, j))
+                    flag = 1
+                    break
+            if flag == 1:
+                break
+print(whole_estate)
+for k in range(0, len(estate_count)):
+    print(estate_count[k])
