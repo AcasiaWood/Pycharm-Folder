@@ -4,4 +4,4 @@ if a > b:
 elif a < b:
     print(str(a)+'<'+str(b))
 else:
-    print('=')
+    print(str(a)+'='+str(b))
