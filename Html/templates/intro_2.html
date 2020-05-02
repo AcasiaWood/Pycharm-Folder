@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST" action="/cal">
+        <h1> Flask #3 Nice to Meet You </h1>
+        <h2> Nice to Meet You </h2>
+        <input type="text" name="num">
+        <button type="submit">Button</button>
+    </form>
+    <div>
+        <p>
+            {% if num == None %}
+                <h5> Number is Not Being. </h5>
+            {% else %}
+                <h6> Nice to Meet You, Again. </h6>
+            {% endif %}
+        </p>
+    </div>
+</body>
+</html>
