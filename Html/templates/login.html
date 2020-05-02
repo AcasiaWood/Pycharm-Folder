@@ -1,0 +1,55 @@
+# login page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <meta name="viewport" content="width=device-width", initial-sacle="1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>Login Page</h1>
+        <br>
+        <form action="" method="post">
+            <input type="text" placeholder="Email" name="email" value="{{request.form.username}}">
+            <input type="text" placeholder="Password" name="password" value="{{request.form.password}}">
+            <input class="btn btn-default" type="submit" value="Login">
+        </form>
+        {% if error %}
+            <p class="error"><strong>Error:</strong>{{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+# home page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Home Page</h1>
+        <p class="value"><strong>login successfully, nice to meet you!</strong></p>
+        <form action="" method="post">
+            <button type="button" onclick="location.href='http://127.0.0.1:5000/logout'">Logout</button>
+        </form>
+    </div>
+</body>
+</html>
+
+# redirect page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST" action="/login">
+        <button type="button" onclick="location.href='http://127.0.0.1:5000/login'">Redirect</button>
+    </form>
+</body>
+</html>
