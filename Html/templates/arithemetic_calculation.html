@@ -1,0 +1,51 @@
+# arithemetic_calculation
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>arithmetic calculation</h1>
+    <br>
+    <form action="/home" method="post">
+        <input type="number" placeholder="first" name="first" value="{{request.form.first}}">
+        <input type="text" placeholder="operator" name="operator" value="{{request.form.operator}}">
+        <input type="number" placeholder="second" name="second" value="{{request.form.second}}">
+        <button type="submit">Calculate</button>
+    </form>
+</body>
+</html>
+
+# multiplication calculation
+# 01
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <ol>
+        {%for i in range(0, len)%}
+            <li>{{string_list[i]}}</li>
+        {%endfor%}
+    </ol>
+</body>
+</html>
+# 02
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <ol>
+        {%for i in range(0, len)%}
+            <li>{{temp_list[i]}}</li>
+        {%endfor%}
+    </ol>
+</body>
+</html>
+
