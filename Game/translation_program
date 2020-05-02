@@ -1,8 +1,8 @@
 import urllib.request
 import json
 
-client_id = "v0FilY_ftOAf5GzBYWrm"
-client_secret = "P8YgCDMgLd"
+client_id = "No ID was entered to protect personal information."
+client_secret = "No password was entered to protect personal information."
 
 language = ["ko", "ja", "zh-cn", "zh-tw", "hi", "en", "es", "fr", "de", "pt", "vi", "id", "fa", "ar", "mm", "th", "ru", "it"]
 
