@@ -7,16 +7,21 @@
 # List
 
 # Basic_Grammar
- * basic_part1(algorithm)
- * basic_part2(data_type)
+ * basic_part1(data_type)
+ * basic_part2(if, elif, else)
  * basic_part3(for, while)
  * basic_part4(function)
- * basic_prat5(class)
+ * basic_part5(class)
  
 # Data_Structure
  * stack
  * queue
  * tree
+ 
+# Algorithm
+ * Artificial_Intelligence
+ * BFS
+ * Math
  
 # Html
  * arithmetic_program
