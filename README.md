@@ -1,24 +1,30 @@
-# Pycharm-Folder
+# Python-Folder
 
 # Introduction About Python
- * This is the python project by using a basic grammar.
- * Use Python Version (3.0)
+ * this is the python project by using a basic grammar.
+ * use python version 3.0
  
 # List
 
 # Basic_Grammar
- * basic_part1 (data_type)
- * basic_part2 (reception - for, while)
- * basic_part3 (list)
- * basic_part4 (tuple)
- * basic_part5 (dictionary)
- * basic_part6 (function)
- * basic_part7 (class)
+ * basic_part1(algorithm)
+ * basic_part2(data_type)
+ * basic_part3(for, while)
+ * basic_part4(function)
+ * basic_prat5(class)
  
 # Data_Structure
  * stack
  * queue
+ * tree
 
 # Python_Game
- * Pygame_Module(CarGame)
- * Python(Tictactoe)
+ * anagram_program
+ * car_game
+ * discord_robot
+ * encoding_program
+ * encryption_program
+ * shooting_game
+ * snake_game
+ * tic_tac_toe
+ * translation_program
