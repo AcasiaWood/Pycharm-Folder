@@ -1,7 +1,7 @@
 result = [[], [], [], [], []]
 add = 0
 for i in range(0, 5):
-    a, b, c, d = map(int, raw_input().split())
+    a, b, c, d = map(int, input().split())
     add = a + b + c + d
     result[i].append(add)
 print(result)
