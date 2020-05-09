@@ -1,6 +1,7 @@
 # a way to use a list
 
 numbers = [1, 2, 3]
+print(numbers)
 
 # list indexing
 
@@ -32,21 +33,23 @@ print(len(marks))
 
 languages = ['korean', 'chinese', 'english']
 del languages[1]
+print(languages)
 
 # add list element
 
 coordinate = [(1, 2), (3, 4), (5, 6)]
 coordinate.append((7, 8))
+print(coordinate)
 
 # sort list
 
 numbers = [3, 7, 1, 5]
-numbers.sort()
+print(numbers.sort())
 
 # reverse list
 
 characters = ['a', 'b', 'c']
-characters.reverse()
+print(characters.reverse())
 
 # count the number of elements x in the list
 
