@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>database_shopping_program</title>
+
+    <style type="text/css">
+        body{ text-align: center; }
+    </style>
+</head>
+<body>
+    <h3>shopping_program</h3>
+    <h4>add</h4>
+    <form action = "{{ url_for('database_add') }}" method="post">
+        name<br>
+        <input type="text" name="item" /><br>
+        number<br>
+        <input type="text" name="num" /><br>
+        price<br>
+        <input type="text" name="price" /><br><br>
+        <input type="submit" value="add"/><br>
+    </form>
+    <h4>show_list</h4>
+    <table border="1" width="600" align="center">
+        <thead>
+        <td>name</td>
+        <td>number</td>
+        <td>price</td>
+        </thead>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row["item"] }}</td>
+            <td>{{ row["num"] }}</td>
+            <td>{{ row["price"] }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>
