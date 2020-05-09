@@ -15,4 +15,4 @@ multiple = {1: 2, 2: 4, 3: 6}
 del multiple[1]
 print(multiple)
 
-# et key and value
+# get key and value
