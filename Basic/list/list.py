@@ -48,16 +48,6 @@ numbers.sort()
 characters = ['a', 'b', 'c']
 characters.reverse()
 
-# return position
-
-numbers = [1, 2, 3]
-print(numbers.index(2))
-
-# insert element into list
-
-numbers = [1, 2, 3]
-numbers.insert(0, 3)
-
 # count the number of elements x in the list
 
 alphabets = ['a', 'b', 'c', 'd', 'e']
