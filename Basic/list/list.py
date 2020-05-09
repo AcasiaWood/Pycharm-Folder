@@ -20,3 +20,45 @@ print(prime_numbers + synthetic_numbers)
 
 # multiply list
 
+alphabets = ['a', 'b', 'c']
+print(alphabets * 3)
+
+# find list length
+
+marks = ['!', '@', '#']
+print(len(marks))
+
+# delete list values
+
+languages = ['korean', 'chinese', 'english']
+del languages[1]
+
+# add list element
+
+coordinate = [(1, 2), (3, 4), (5, 6)]
+coordinate.append((7, 8))
+
+# sort list
+
+numbers = [3, 7, 1, 5]
+numbers.sort()
+
+# reverse list
+
+characters = ['a', 'b', 'c']
+characters.reverse()
+
+# return position
+
+numbers = [1, 2, 3]
+print(numbers.index(2))
+
+# insert element into list
+
+numbers = [1, 2, 3]
+numbers.insert(0, 3)
+
+# count the number of elements x in the list
+
+alphabets = ['a', 'b', 'c', 'd', 'e']
+print(alphabets.count('a'))
