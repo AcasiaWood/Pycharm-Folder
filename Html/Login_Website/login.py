@@ -7,6 +7,20 @@ conn.execute("CREATE TABLE IF NOT EXISTS SHOPPING (item TEXT, num TEXT, price TE
 print("table created successfully")
 conn.close()
 
+log_conn = sqlite3.connect("account_database.db")
+print("opened database successfully")
+log_conn.execute("CREATE TABLE IF NOT EXISTS LOGIN (email TEXT, password TEXT)")
+print("table created successfully")
+log_conn.close()
+
+with sqlite3.connect('account_database.db') as log_conn:
+    cur = log_conn.cursor()
+    cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", ('admin', '123456'))
+    cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", ('user1', '654321'))
+    cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", ('user2', '123654'))
+    log_conn.commit()
+    msg = "record successfully add"
+
 app = Flask(__name__)
 
 app.secret_key = 'admin'
@@ -15,9 +29,21 @@ app.secret_key = 'admin'
 def default_setting():
     return render_template('localhost.html')
 
+def account_info():
+    # get a data from the database.
+    account = {}
+    conn_ = sqlite3.connect('account_database.db')
+    conn_.row_factory = sqlite3.Row
+    cur = conn_.cursor()
+    cur.execute("select * from login")
+    rows = cur.fetchall()
+    for number in range(len(rows)):
+        account[rows[number][0]] = rows[number][1]
+    return account, render_template("account.html", rows=rows)
+
 def check_out(email, password):
     flag = False
-    account = {'admin': '123456', 'user1': '654321', 'user2': '321654'}
+    account, _ = account_info()
     try:
         if account[email] == password:
             flag = True
