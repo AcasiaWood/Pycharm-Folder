@@ -1,7 +1,7 @@
 # Python-Folder
 
 # Introduction About Python
- * this is the python project by using a basic grammar.
+ * this is a python folder by using a basic grammar.
  * use python version 3.0
  
 # List
