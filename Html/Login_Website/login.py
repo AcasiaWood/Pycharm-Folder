@@ -51,6 +51,31 @@ def check_out(email, password):
         flag = False
     return flag
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    error = None
+    flag = True
+    if not session.get('logged_in'):
+        if request.method == "POST":
+            email, password = request.form['email'], request.form['password']
+            conn = sqlite3.connect('account_database.db')
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute("select * from login")
+            rows = cur.fetchall()
+            for row in rows:
+                if row[0] == email:
+                    flag = False
+                    break
+            if not flag:
+                error = ' invalid account, try to register again.'
+            else:
+                session['logged_in'] = True
+                return redirect(url_for('homepage'))
+    else:
+        logout()
+    return render_template('register.html', error=error)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -75,8 +100,8 @@ def logout():
 def homepage():
     return render_template('homepage.html')
 
-@app.route('/shopping')
-def shopping():
+@app.route('/export')
+def export():
     # get a data from the database.
     conn_ = sqlite3.connect('database.db')
     conn_.row_factory = sqlite3.Row
@@ -86,6 +111,15 @@ def shopping():
     print("DB: ")
     print(rows)
     return render_template("shopping.html", rows=rows)
+
+@app.route('/shopping')
+def shopping():
+    email, password = request.form['email'], request.form['password']
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("select * from shopping")
+    rows = cur.fetchall()
 
 @app.route('/database_add', methods=['POST', 'GET'])
 def database_add():
