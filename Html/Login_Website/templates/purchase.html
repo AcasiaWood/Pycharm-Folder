@@ -2,16 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>shopping_website</title>
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>database_shopping_program</title>
+    <style type="text/css">
+        body{ text-align: center; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>shopping_website</h1>
-        <br>
-        <form action="" method="post">
-            <h3>google_special_present: </h3>
-            <button type="submit"></button>
-        </form>
-    </div>
+    <h3>shopping_website</h3>
+    <h4>shopping_list</h4>
+    <form action="" method="post">
+        <td><input type="text" placeholder="Product" name="product" value="{{request.form.product}}"></td>
+        <td><input type="number" placeholder="Quantity" name="quantity" value="{{request.form.quantity}}"></td>
+        <td><button type="submit">Purchase</button></td>
+    </form>
+    <br>
+    <table border="1" width="600" align="center">
+        <thead>
+        <td>name</td>
+        <td>number</td>
+        <td>price</td>
+        </thead>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row["item"] }}</td>
+            <td>{{ row["num"] }}</td>
+            <td>{{ row["price"] }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    {% if error %}
+        <p class="error"><strong>Error:</strong>{{ error }}</p>
+    {% endif %}
 </body>
 </html>
