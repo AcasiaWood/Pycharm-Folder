@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login page</title>
+    <meta name="viewport" content="width=device-width", initial-sacle="1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>home page</h1>
+        <form action="" method="post", action="/">
+            <input type="text" placeholder="id" name="id" value="{{request.form.want_id}}">
+            <br>
+            <input type="text" placeholder="pwd" name="pwd" value="{{request.form.pwd}}">
+            <br>
+            <input class="btn btn-default" type="submit", style="width:100px;height:100px" value="Login">
+            <br>
+        </form>
+        <form action="/sign_up/" method="post">
+            <button name="forwardBtn" type="submit">Sign Up</button>
+        </form>
+    </div>
+</body>
+</html>
