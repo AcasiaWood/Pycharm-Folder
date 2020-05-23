@@ -162,7 +162,7 @@ def shopping():
         quantity = request.form['quantity']
         if len(rows) != 0:
             for row in rows:
-                if row[0] == product and row[1] >= quantity:
+                if row[0] == product and row[1] >= quantity > 0:
                     # TODO
                     # code to delete for each item, num, and price data is required.
                     return render_template("order.html")
