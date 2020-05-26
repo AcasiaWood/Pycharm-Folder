@@ -1,4 +1,5 @@
 import sqlite3
+import requests
 from flask import Flask, render_template, request, redirect, session, url_for
 
 conn = sqlite3.connect("shopping_database.db")
@@ -191,6 +192,42 @@ def database_add():
             msg = "error in insert operation"
         finally:
             return render_template("shopping_add.html", message=msg)
+
+@app.route('/celebrity_face_recognition', methods=['POST', 'GET'])
+def celebrity_face_recognition():
+    error = None
+    response = None
+
+    client_id = "No ID was entered to protect personal information."
+    client_secret = "No password was entered to protect personal information."
+
+    url = "https://openapi.naver.com/v1/vision/celebrity"
+
+    if request.method == 'POST':
+        image = request.form['image']
+        try:
+            img = 'img/' + image
+            files = {'image': open(img, 'rb')}
+            headers = {'X-Naver-Client-ID': client_id, 'X-Naver-Client-Secret': client_secret}
+            response = requests.post(url, files=files, headers=headers)
+            rescode = response.status_code
+        except FileNotFoundError:
+            response = None
+            if '.' in image:
+                rescode = " file does not exist or has been deleted."
+            else:
+                rescode = " you did not enter an extension or you entered an incorrect extension."
+            error = rescode
+
+        if rescode == 200:
+            print(response.text)
+        else:
+            print("Error Code:" + rescode)
+
+    try:
+        return render_template("celebrity_face_recognition.html", error=error, response=response.text)
+    except AttributeError:
+        return render_template("celebrity_face_recognition.html", error=error, response=response)
 
 if __name__ == '__main__':
     app.run()
