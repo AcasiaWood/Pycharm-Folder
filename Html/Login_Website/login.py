@@ -222,7 +222,7 @@ def celebrity_face_recognition():
         if rescode == 200:
             print(response.text)
         else:
-            print("Error Code:" + rescode)
+            print("Error Code:" + str(rescode))
 
     try:
         return render_template("celebrity_face_recognition.html", error=error, response=response.text)
