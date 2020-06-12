@@ -1,6 +1,8 @@
 import sqlite3
 import requests
+import json
 from flask import Flask, render_template, request, redirect, session, url_for
+from werkzeug.utils import secure_filename
 
 conn = sqlite3.connect("shopping_database.db")
 print("opened database successfully")
@@ -130,6 +132,62 @@ def login():
     else:
         return redirect(url_for('homepage'))
     return render_template('login.html', error=error)
+
+def analysis(route):
+    error = None
+
+    client_id = "No ID was entered to protect personal information."
+    client_secret = "No password was entered to protect personal information."
+
+    client_id = "py03VrUrmr2slD6jn5cO "
+    client_secret = "4ujmGY34i4"
+
+    url = "https://openapi.naver.com/v1/vision/celebrity"
+
+    try:
+        img = route
+        files = {'image': open(img, 'rb')}
+        headers = {'X-Naver-Client-ID': client_id, 'X-Naver-Client-Secret': client_secret}
+        response = requests.post(url, files=files, headers=headers)
+        rescode = response.status_code
+    except FileNotFoundError:
+        response = None
+        image = route.strip('analysis/')
+        if '.' in image:
+            rescode = " file does not exist or has been deleted."
+        else:
+            rescode = " you did not enter an extension or you entered an incorrect extension."
+        error = rescode
+
+    if rescode == 200:
+        print(response.text)
+    else:
+        print("Error Code:" + str(rescode))
+
+    try:
+        return error, json.loads(response.text)["faces"][0]["celebrity"]["confidence"]
+    except AttributeError:
+        return error, False
+
+def compare_file(route):
+    error, record = analysis(route=route)
+    permission = {'permit': 0}
+    if not permission or error is not None:
+        redirect(url_for('upload_file'))
+    else:
+        for data in permission.values():
+            if data < record < data + 1:
+                return redirect(url_for('homepage'))
+        return redirect(url_for('upload_file'))
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        route = 'analysis/' + secure_filename(file.filename)
+        file.save('analysis/' + secure_filename(file.filename))
+        compare_file(route=route)
+    return render_template('upload.html')
 
 @app.route('/logout')
 def logout():
