@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>analysis</title>
+</head>
+<body>
+    {% if error %}
+        <h2>result: {{ response }}</h2>
+        <p class="error"><strong>Error:</strong>{{ error }}</p>
+        <button type="button" onclick="location.href='http://127.0.0.1:5000/upload'">Upload_Login</button>
+    {% else %}
+        <h2>result: {{ response }}</h2>
+    {% endif %}
+</body>
+</html>
