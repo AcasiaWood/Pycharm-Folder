@@ -16,5 +16,5 @@ else:
         else:
             print('roots = ' + str(first_root) + ' or ' + str(second_root))
     else:
-        equation = '(' + str(b) + ' ± ' + '√' + str(b ** 2 - 4 * a * c) + ')' + ' / ' + str(2 * a)
+        equation = '(' + str(b) + ' ± ' + '√' + str(formula) + ')' + ' / ' + str(2 * a)
         print('equation' + ' = ' + equation)
