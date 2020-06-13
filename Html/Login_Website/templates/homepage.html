@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>homepage_website</title>
+    <title>Homepage</title>
 </head>
 <body>
     <div class="container">
-        <h1>homepage</h1>
-        <p class="value"><strong>login successfully, nice to meet you!</strong></p>
+        <h1>Homepage</h1>
         <form action="" method="post">
-            <button type="button" onclick="location.href='http://127.0.0.1:5000/logout'">logout</button>
-            <button type="button" onclick="location.href='http://127.0.0.1:5000/export'">export</button>
-            <button type="button" onclick="location.href='http://127.0.0.1:5000/shopping'">shopping</button>
-            <button type="button" onclick="location.href='http://127.0.0.1:5000/celebrity_face_recognition">celebrity_face_recognition</button>
+            <input type="text" placeholder="Search" name="search" value="{{request.form.search}}"><br>
+            <button type="button" onclick="location.href='http://127.0.0.1:5000/logout'">Logout</button>
+            <button type="button" onclick="location.href='http://127.0.0.1:5000/export'">Export</button>
+            <button type="button" onclick="location.href='http://127.0.0.1:5000/shopping'">Shopping</button>
+            <button type="button" onclick="location.href='http://127.0.0.1:5000/celebrity_face_recognition">Celebrity Face Recognition</button>
         </form>
     </div>
 </body>
 </html>
+
