@@ -139,9 +139,6 @@ def analysis(route):
     client_id = "No ID was entered to protect personal information."
     client_secret = "No password was entered to protect personal information."
 
-    client_id = "py03VrUrmr2slD6jn5cO "
-    client_secret = "4ujmGY34i4"
-
     url = "https://openapi.naver.com/v1/vision/celebrity"
 
     try:
