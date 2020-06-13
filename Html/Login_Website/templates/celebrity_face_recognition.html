@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>celebrity_face_recognition</title>
+    <title>Celebrity Face Recognition</title>
 </head>
 <body>
-    <h1>celebrity_face_recognition</h1>
+    <h1>Celebrity Face Recognition</h1>
     <form action="" method="post">
         <input type="text" placeholder="image" name="image" value="{{request.form.image}}">
     </form>
     {% if error %}
-        <h2>result: {{ response }}</h2>
+        <h2>Result: {{ response }}</h2>
         <p class="error"><strong>Error:</strong>{{ error }}</p>
     {% else %}
-        <h2>result: {{ response }}</h2>
+        <h2>Result: {{ response }}</h2>
+        <h2>Website: https://ko.wikipedia.org/wiki/{{ response }}</h2>
     {% endif %}
 </body>
 </html>
