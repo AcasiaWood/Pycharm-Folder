@@ -1,6 +1,8 @@
 import sqlite3
 import requests
 import json
+import os
+import webbrowser
 from flask import Flask, render_template, request, redirect, session, url_for
 from werkzeug.utils import secure_filename
 
@@ -136,8 +138,8 @@ def login():
 def analysis(route):
     error = None
 
-    client_id = "No ID was entered to protect personal information."
-    client_secret = "No password was entered to protect personal information."
+    client_id = "py03VrUrmr2slD6jn5cO "
+    client_secret = "4ujmGY34i4"
 
     url = "https://openapi.naver.com/v1/vision/celebrity"
 
@@ -149,12 +151,8 @@ def analysis(route):
         rescode = response.status_code
     except FileNotFoundError:
         response = None
-        image = route.strip('analysis/')
-        if '.' in image:
-            rescode = " file does not exist or has been deleted."
-        else:
-            rescode = " you did not enter an extension or you entered an incorrect extension."
-        error = rescode
+        rescode = 400
+        error = True
 
     if rescode == 200:
         print(response.text)
@@ -165,25 +163,43 @@ def analysis(route):
         return error, json.loads(response.text)["faces"][0]["celebrity"]["confidence"]
     except AttributeError:
         return error, False
+    except KeyError:
+        return error, False
 
 def compare_file(route):
     error, record = analysis(route=route)
-    permission = {'permit': 0}
-    if not permission or error is not None:
-        redirect(url_for('upload_file'))
+    system = False
+    permission = {'permit': 0, 'refuse': None}
+    if not permission or error:
+        system = False
+        return system
     else:
         for data in permission.values():
-            if data < record < data + 1:
-                return redirect(url_for('homepage'))
-        return redirect(url_for('upload_file'))
+            try:
+                if data < record < data + 1:
+                    system = True
+                    return system
+            except TypeError:
+                break
+        return system
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         route = 'analysis/' + secure_filename(file.filename)
-        file.save('analysis/' + secure_filename(file.filename))
-        compare_file(route=route)
+        try:
+            file.save('analysis/' + secure_filename(file.filename))
+            system = compare_file(route=route)
+            os.remove(route)
+            if system:
+                return redirect(url_for('homepage'))
+            else:
+                return render_template('upload.html')
+        except FileNotFoundError:
+            return render_template('upload.html')
+        except IsADirectoryError:
+            return render_template('upload.html')
     return render_template('upload.html')
 
 @app.route('/logout')
@@ -193,6 +209,9 @@ def logout():
 
 @app.route('/homepage', methods=['GET', 'POST'])
 def homepage():
+    if request.method == 'POST':
+        url = request.form['search']
+        webbrowser.open(url)
     return render_template('homepage.html')
 
 @app.route('/export')
@@ -243,6 +262,7 @@ def database_add():
                 msg = "record successfully add"
                 return render_template("shopping_add_result.html", message=msg)
         except:
+            conn = sqlite3.connect('shopping_database.db')
             conn.rollback()
             msg = "error in insert operation"
         finally:
@@ -253,8 +273,8 @@ def celebrity_face_recognition():
     error = None
     response = None
 
-    client_id = "No ID was entered to protect personal information."
-    client_secret = "No password was entered to protect personal information."
+    client_id = "py03VrUrmr2slD6jn5cO "
+    client_secret = "4ujmGY34i4"
 
     url = "https://openapi.naver.com/v1/vision/celebrity"
 
@@ -280,7 +300,7 @@ def celebrity_face_recognition():
             print("Error Code:" + str(rescode))
 
     try:
-        return render_template("celebrity_face_recognition.html", error=error, response=response.text)
+        return render_template("celebrity_face_recognition.html", error=error, response=json.loads(response.text)["faces"][0]["celebrity"]["value"])
     except AttributeError:
         return render_template("celebrity_face_recognition.html", error=error, response=response)
 
