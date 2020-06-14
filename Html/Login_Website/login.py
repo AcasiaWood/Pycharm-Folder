@@ -100,22 +100,26 @@ def register():
     if not session.get('logged_in'):
         if request.method == "POST":
             email, password = request.form['email'], request.form['password']
-            conn = sqlite3.connect('account_database.db')
-            conn.row_factory = sqlite3.Row
-            cur = conn.cursor()
-            cur.execute("select * from login")
-            rows = cur.fetchall()
-            for row in rows:
-                if row[0] == email:
-                    flag = False
-                    break
-            if not flag:
-                error = ' email already exists, try to register again.'
+            if email == '':
+                error = ' email contains invalid special characters.'
+                return render_template('register.html', error=error)
             else:
-                session['logged_in'] = True
-                cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", (email, password))
-                conn.commit()
-                return redirect(url_for('homepage'))
+                conn = sqlite3.connect('account_database.db')
+                conn.row_factory = sqlite3.Row
+                cur = conn.cursor()
+                cur.execute("select * from login")
+                rows = cur.fetchall()
+                for row in rows:
+                    if row[0] == email:
+                        flag = False
+                        break
+                if not flag:
+                    error = ' email already exists, try to register again.'
+                else:
+                    session['logged_in'] = True
+                    cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", (email, password))
+                    conn.commit()
+                    return redirect(url_for('homepage'))
     else:
         logout()
     return render_template('register.html', error=error)
@@ -188,6 +192,7 @@ def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         route = 'analysis/' + secure_filename(file.filename)
+        print(route)
         try:
             file.save('analysis/' + secure_filename(file.filename))
             system = compare_file(route=route)
@@ -199,6 +204,8 @@ def upload_file():
         except FileNotFoundError:
             return render_template('upload.html')
         except IsADirectoryError:
+            return render_template('upload.html')
+        except PermissionError:
             return render_template('upload.html')
     return render_template('upload.html')
 
@@ -213,6 +220,10 @@ def homepage():
         url = request.form['search']
         webbrowser.open(url)
     return render_template('homepage.html')
+
+@app.route('/notice', methods=['GET', 'POST'])
+def notice():
+    return render_template('notice.html')
 
 @app.route('/export')
 def export():
@@ -292,6 +303,10 @@ def celebrity_face_recognition():
                 rescode = " file does not exist or has been deleted."
             else:
                 rescode = " you did not enter an extension or you entered an incorrect extension."
+            error = rescode
+        except PermissionError:
+            response = None
+            rescode = ' email contains invalid special characters.'
             error = rescode
 
         if rescode == 200:
