@@ -10,11 +10,11 @@
         <input type="text" placeholder="image" name="image" value="{{request.form.image}}">
     </form>
     {% if error %}
-        <h2>Result: {{ response }}</h2>
+        <h3>Result: {{ response }}</h3>
         <p class="error"><strong>Error:</strong>{{ error }}</p>
     {% else %}
-        <h2>Result: {{ response }}</h2>
-        <h2>Website: https://ko.wikipedia.org/wiki/{{ response }}</h2>
+        <h3>Result: {{ response }}</h3>
+        <h3>Website: https://ko.wikipedia.org/wiki/{{ response }}</h3>
     {% endif %}
 </body>
 </html>
