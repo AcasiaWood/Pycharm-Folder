@@ -11,11 +11,12 @@ print("opened database successfully")
 conn.execute("CREATE TABLE IF NOT EXISTS SHOPPING (item TEXT, num TEXT, price TEXT)")
 print("table created successfully")
 
-log_conn = sqlite3.connect("account_database.db")
+conn = sqlite3.connect("account_database.db")
 print("opened database successfully")
-log_conn.execute("CREATE TABLE IF NOT EXISTS LOGIN (email TEXT, password TEXT)")
+conn.execute("CREATE TABLE IF NOT EXISTS LOGIN (email TEXT, password TEXT, money TEXT)")
 print("table created successfully")
 
+conn = sqlite3.connect("shopping_database.db")
 conn.row_factory = sqlite3.Row
 cur = conn.cursor()
 cur.execute("select * from shopping")
@@ -35,8 +36,9 @@ else:
 
 conn.close()
 
-log_conn.row_factory = sqlite3.Row
-cur = log_conn.cursor()
+conn = sqlite3.connect("account_database.db")
+conn.row_factory = sqlite3.Row
+cur = conn.cursor()
 cur.execute("select * from login")
 rows = cur.fetchall()
 
@@ -44,23 +46,20 @@ select = str(input('whether to delete account database (y/n): '))
 
 if select == 'y':
     if len(rows) != 0:
-        log_conn.execute("DELETE FROM login")
-        log_conn.commit()
+        conn.execute("DELETE FROM login")
+        conn.commit()
         print("table deleted successfully")
     else:
         print("error: there are no entries in table.")
 else:
     print("table deleted unsuccessfully")
 
-log_conn.close()
+conn.close()
 
-with sqlite3.connect('account_database.db') as log_conn:
-    cur = log_conn.cursor()
-    cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", ('admin', '123456'))
-    cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", ('user1', '654321'))
-    cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", ('user2', '123654'))
-    log_conn.commit()
-    msg = "record successfully add"
+with sqlite3.connect('account_database.db') as conn:
+    cur = conn.cursor()
+    cur.execute("INSERT INTO LOGIN (email, password, money) VALUES (?, ?, ?)", ('admin', '123456', '10000'))
+    conn.commit()
 
 app = Flask(__name__)
 
@@ -71,21 +70,20 @@ def default_setting():
     return render_template('localhost.html')
 
 def account_info():
-    # get a data from the database.
     account = {}
-    conn_ = sqlite3.connect('account_database.db')
-    conn_.row_factory = sqlite3.Row
-    cur = conn_.cursor()
+    conn = sqlite3.connect('account_database.db')
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
     cur.execute("select * from login")
     rows = cur.fetchall()
     for number in range(len(rows)):
         account[rows[number][0]] = rows[number][1]
+    conn.close()
     return account, render_template("account.html", rows=rows)
 
 def check_out(email, password):
     flag = False
     account, _ = account_info()
-    print(account)
     try:
         if account[email] == password:
             flag = True
@@ -115,10 +113,12 @@ def register():
                         break
                 if not flag:
                     error = ' email already exists, try to register again.'
+                    conn.close()
                 else:
                     session['logged_in'] = True
                     cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", (email, password))
                     conn.commit()
+                    conn.close()
                     return redirect(url_for('homepage'))
     else:
         logout()
@@ -218,7 +218,7 @@ def logout():
 def homepage():
     if request.method == 'POST':
         url = request.form['search']
-        webbrowser.open(url)
+        webbrowser.open(url=url)
     return render_template('homepage.html')
 
 @app.route('/notice', methods=['GET', 'POST'])
@@ -233,6 +233,7 @@ def export():
     cur = conn.cursor()
     cur.execute("select * from shopping")
     rows = cur.fetchall()
+    conn.close()
     return render_template("shopping.html", rows=rows)
 
 @app.route('/shopping', methods=['POST', 'GET'])
@@ -244,6 +245,7 @@ def shopping():
     cur.execute("select * from shopping")
     rows = cur.fetchall()
     if request.method == 'POST':
+        id = request.form['id']
         product = request.form['product']
         quantity = request.form['quantity']
         if len(rows) != 0:
@@ -251,11 +253,40 @@ def shopping():
                 if row[0] == product and row[1] >= quantity:
                     # TODO
                     # code to delete for each item, num, and price data is required.
+                    with sqlite3.connect('shopping_database.db') as conn:
+                        conn.row_factory = sqlite3.Row
+                        cur = conn.cursor()
+                        cur.execute("select * from shopping")
+                        rows = cur.fetchall()
+                        for row in rows:
+                            if str(row[0]) == str(product):
+                                global item
+                                item = row[2]
+                                break
+                        cur.execute("UPDATE shopping SET num = {0} WHERE num = {1}"
+                                    .format(int(row[1])-int(quantity), int(row[1])))
+                        conn.commit()
+                        if int(row[1]) == 0:
+                            conn.execute("DELETE FROM shopping")
+                            conn.commit()
+                    with sqlite3.connect('account_database.db') as conn:
+                        conn.row_factory = sqlite3.Row
+                        cur = conn.cursor()
+                        cur.execute("select * from login")
+                        rows = cur.fetchall()
+                        for row in rows:
+                            if str(row[0]) == str(id):
+                                cur.execute("UPDATE login SET money = {0} WHERE money {1}"
+                                            .format(int(row[2])-(int(item) * int(quantity)), int(row[2])))
+                                conn.commit()
+                                print(row[2])
                     return render_template("order.html")
                 else:
                     error = ' invalid product name or product quantity, try to enter again.'
+                    conn.close()
         else:
             error = ' invalid product name or product quantity, try to enter again.'
+            conn.close()
     return render_template("purchase.html", rows=rows, error=error)
 
 @app.route('/database_add', methods=['POST', 'GET'])
@@ -271,11 +302,13 @@ def database_add():
                 cur.execute("INSERT INTO shopping (item, num, price) VALUES (?, ?, ?)", (item, num, price))
                 conn.commit()
                 msg = "record successfully add"
+                conn.close()
                 return render_template("shopping_add_result.html", message=msg)
         except:
             conn = sqlite3.connect('shopping_database.db')
             conn.rollback()
             msg = "error in insert operation"
+            conn.close()
         finally:
             return render_template("shopping_add.html", message=msg)
 
