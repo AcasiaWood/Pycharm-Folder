@@ -142,8 +142,8 @@ def login():
 def analysis(route):
     error = None
 
-    client_id = "py03VrUrmr2slD6jn5cO "
-    client_secret = "4ujmGY34i4"
+    client_id = "private"
+    client_secret = "private"
 
     url = "https://openapi.naver.com/v1/vision/celebrity"
 
@@ -227,7 +227,6 @@ def notice():
 
 @app.route('/export')
 def export():
-    # get a data from the database.
     conn = sqlite3.connect('shopping_database.db')
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -251,8 +250,6 @@ def shopping():
         if len(rows) != 0:
             for row in rows:
                 if row[0] == product and row[1] >= quantity:
-                    # TODO
-                    # code to delete for each item, num, and price data is required.
                     with sqlite3.connect('shopping_database.db') as conn:
                         conn.row_factory = sqlite3.Row
                         cur = conn.cursor()
@@ -317,8 +314,8 @@ def celebrity_face_recognition():
     error = None
     response = None
 
-    client_id = "py03VrUrmr2slD6jn5cO "
-    client_secret = "4ujmGY34i4"
+    client_id = "private"
+    client_secret = "private"
 
     url = "https://openapi.naver.com/v1/vision/celebrity"
 
