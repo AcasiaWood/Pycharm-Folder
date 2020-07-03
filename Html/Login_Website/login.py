@@ -54,30 +54,28 @@ if select == 'y':
 else:
     print("table deleted unsuccessfully")
 
-with sqlite3.connect('account_database.db') as conn:
-    cur = conn.cursor()
-    cur.execute("INSERT INTO LOGIN (email, password, money) VALUES (?, ?, ?)", ('admin', '123456', '10000'))
-    conn.commit()
-
 app = Flask(__name__)
 
 app.secret_key = 'admin'
+
 
 @app.route('/')
 def default_setting():
     return render_template('localhost.html')
 
+
 def account_info():
     account = {}
-    conn = sqlite3.connect('account_database.db')
-    conn.row_factory = sqlite3.Row
-    cur = conn.cursor()
-    cur.execute("select * from login")
-    rows = cur.fetchall()
-    for number in range(len(rows)):
-        account[rows[number][0]] = rows[number][1]
-    conn.close()
+    log_conn = sqlite3.connect('account_database.db')
+    log_conn.row_factory = sqlite3.Row
+    log_cur = log_conn.cursor()
+    log_cur.execute("select * from login")
+    log_rows = log_cur.fetchall()
+    for log_row in log_rows:
+        account[log_row[0]] = log_row[1]
+    log_conn.close()
     return account, render_template("account.html", rows=rows)
+
 
 def check_out(email, password):
     flag = False
@@ -88,6 +86,7 @@ def check_out(email, password):
     except KeyError:
         flag = False
     return flag
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -114,13 +113,14 @@ def register():
                     conn.close()
                 else:
                     session['logged_in'] = True
-                    cur.execute("INSERT INTO login (email, password) VALUES (?, ?)", (email, password))
+                    cur.execute("INSERT INTO login (email, password, money) VALUES (?, ?, ?)", (email, password, 10000))
                     conn.commit()
                     conn.close()
                     return redirect(url_for('homepage'))
     else:
         logout()
     return render_template('register.html', error=error)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -136,6 +136,13 @@ def login():
     else:
         return redirect(url_for('homepage'))
     return render_template('login.html', error=error)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return default_setting()
+
 
 def analysis(route):
     error = None
@@ -168,6 +175,7 @@ def analysis(route):
     except KeyError:
         return error, False
 
+
 def compare_file(route):
     error, record = analysis(route=route)
     system = False
@@ -184,6 +192,7 @@ def compare_file(route):
             except TypeError:
                 break
         return system
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -207,10 +216,6 @@ def upload_file():
             return render_template('upload.html')
     return render_template('upload.html')
 
-@app.route('/logout')
-def logout():
-    session.pop('logged_in', None)
-    return default_setting()
 
 @app.route('/homepage', methods=['GET', 'POST'])
 def homepage():
@@ -219,9 +224,51 @@ def homepage():
         webbrowser.open(url=url)
     return render_template('homepage.html')
 
+
+@app.route('/information', methods=['GET', 'POST'])
+def information():
+    global email, password, balance
+    error = None
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        check = check_out(email, password)
+        if not check:
+            error = ' invalid account, try to login again.'
+        else:
+            log_conn = sqlite3.connect("account_database.db")
+            log_conn.row_factory = sqlite3.Row
+            log_cur = log_conn.cursor()
+            log_cur.execute("select * from login")
+            log_rows = log_cur.fetchall()
+            for log_row in log_rows:
+                if log_row[0] == email:
+                    balance = log_row[2]
+                    return render_template('information.html', email=email, password=password, balance=balance)
+    return render_template('authentication.html', error=error)
+
+
 @app.route('/notice', methods=['GET', 'POST'])
 def notice():
-    return render_template('notice.html')
+    return render_template("notice.html")
+
+
+@app.route('/charge_balance', methods=['GET', 'POST'])
+def charge_balance():
+    if request.method == 'POST':
+        amount = request.form['amount']
+        log_conn = sqlite3.connect("account_database.db")
+        log_cur = log_conn.cursor()
+        log_cur.execute("select * from login")
+        print(email, type(email))
+        print(log_cur.fetchall())
+        log_cur.execute("UPDATE login SET money = {0} WHERE email = {1}"
+                        .format(int(balance)+int(amount), email))
+        log_conn.commit()
+        log_conn.close()
+        return redirect(url_for('information'))
+    return render_template("charge_balance.html")
+
 
 @app.route('/export')
 def export():
@@ -232,6 +279,7 @@ def export():
     rows = cur.fetchall()
     conn.close()
     return render_template("shopping.html", rows=rows)
+
 
 @app.route('/shopping', methods=['POST', 'GET'])
 def shopping():
@@ -292,23 +340,29 @@ def shopping():
             conn.close()
     return render_template("purchase.html", rows=rows, error=error)
 
-@app.route('/database_add', methods=['POST', 'GET'])
-def database_add():
+
+@app.route('/add', methods=['POST', 'GET'])
+def add():
     if request.method == 'POST':
-        try:
-            item = request.form['item']
-            num = request.form['num']
-            price = request.form['price']
-            with sqlite3.connect('shopping_database.db') as conn:
-                cur = conn.cursor()
-                cur.execute("INSERT INTO shopping (item, num, price) VALUES (?, ?, ?)", (item, num, price))
-                conn.commit()
-                conn.close()
-        except:
-            conn.rollback()
-            conn.close()
-        finally:
-            return redirect(url_for('homepage'))
+        accept = True
+        shop_item = request.form['item']
+        shop_num = request.form['num']
+        shop_price = request.form['price']
+        if shop_item == '' or shop_num == '' or shop_price == '':
+            return redirect(url_for('export'))
+        with sqlite3.connect('shopping_database.db') as shop_conn:
+            shop_conn.row_factory = sqlite3.Row
+            shop_cur = shop_conn.cursor()
+            shop_cur.execute("select * from shopping")
+            shop_rows = shop_cur.fetchall()
+            for shop_row in shop_rows:
+                if shop_item == shop_row[0]:
+                    accept = False
+            if accept:
+                shop_cur.execute("INSERT INTO shopping (item, num, price) VALUES (?, ?, ?)", (shop_item, shop_num, shop_price))
+                shop_conn.commit()
+            return redirect(url_for('export'))
+
 
 @app.route('/celebrity_face_recognition', methods=['POST', 'GET'])
 def celebrity_face_recognition():

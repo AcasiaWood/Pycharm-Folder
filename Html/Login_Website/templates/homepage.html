@@ -8,11 +8,15 @@
     <div class="container">
         <h1>Homepage</h1>
         <form action="" method="post">
-            <input type="text" placeholder="Search" name="search" value="{{request.form.search}}"><br><br>
+            <input type="text" placeholder="Search" name="search" value="{{request.form.search}}">
+            <h4>Account Service</h4>
             <button type="button" onclick="location.href='http://127.0.0.1:5000/logout'">Logout</button>
+            <h4>Homepage Service</h4>
             <button type="button" onclick="location.href='http://127.0.0.1:5000/export'">Export</button>
             <button type="button" onclick="location.href='http://127.0.0.1:5000/shopping'">Shopping</button>
             <button type="button" onclick="location.href='http://127.0.0.1:5000/celebrity_face_recognition'">Celebrity Face Recognition</button>
+            <h4>Customer Service</h4>
+            <button type="button" onclick="location.href='http://127.0.0.1:5000/information'">Information</button>
             <button type="button" onclick="location.href='http://127.0.0.1:5000/notice'">Notice</button>
         </form>
     </div>
