@@ -16,43 +16,53 @@ print("opened database successfully")
 conn.execute("CREATE TABLE IF NOT EXISTS LOGIN (email TEXT, password TEXT, money TEXT)")
 print("table created successfully")
 
-conn = sqlite3.connect("shopping_database.db")
-conn.row_factory = sqlite3.Row
-cur = conn.cursor()
-cur.execute("select * from shopping")
-rows = cur.fetchall()
+email, password = map(str, input('enter your email and password to confirm your information: ').split())
 
-select = str(input('whether to delete export database (y/n): '))
+if email == 'admin' and password == '123456':
+    conn = sqlite3.connect("shopping_database.db")
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("select * from shopping")
+    rows = cur.fetchall()
 
-if select == 'y':
-    if len(rows) != 0:
-        conn.execute("DELETE FROM shopping")
-        conn.commit()
-        print("table deleted successfully")
+    select = str(input('whether to delete export database (y/n): '))
+
+    if select == 'y':
+        if len(rows) != 0:
+            conn.execute("DELETE FROM shopping")
+            conn.commit()
+            print("table deleted successfully")
+        else:
+            print("error: there are no entries in table.")
     else:
-        print("error: there are no entries in table.")
-else:
-    print("table deleted unsuccessfully")
+        print("table deleted unsuccessfully")
 
-conn.close()
+    conn.close()
+
+    conn = sqlite3.connect("account_database.db")
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("select * from login")
+    rows = cur.fetchall()
+
+    select = str(input('whether to delete account database (y/n): '))
+
+    if select == 'y':
+        if len(rows) != 0:
+            conn.execute("DELETE FROM login")
+            conn.commit()
+            print("table deleted successfully")
+        else:
+            print("error: there are no entries in table.")
+    else:
+        print("table deleted unsuccessfully")
 
 conn = sqlite3.connect("account_database.db")
 conn.row_factory = sqlite3.Row
 cur = conn.cursor()
-cur.execute("select * from login")
-rows = cur.fetchall()
-
-select = str(input('whether to delete account database (y/n): '))
-
-if select == 'y':
-    if len(rows) != 0:
-        conn.execute("DELETE FROM login")
-        conn.commit()
-        print("table deleted successfully")
-    else:
-        print("error: there are no entries in table.")
-else:
-    print("table deleted unsuccessfully")
+cur.execute("INSERT INTO login (email, password, money) VALUES (?, ?, ?)", ('admin', '123456', 10000))
+conn.commit()
+conn.close()
 
 app = Flask(__name__)
 
@@ -94,28 +104,29 @@ def register():
     flag = True
     if not session.get('logged_in'):
         if request.method == "POST":
-            email, password = request.form['email'], request.form['password']
-            if email == '':
+            log_email, log_password = request.form['email'], request.form['password']
+            if log_email == '':
                 error = ' email contains invalid special characters.'
                 return render_template('register.html', error=error)
             else:
-                conn = sqlite3.connect('account_database.db')
-                conn.row_factory = sqlite3.Row
-                cur = conn.cursor()
-                cur.execute("select * from login")
-                rows = cur.fetchall()
-                for row in rows:
-                    if row[0] == email:
+                log_conn = sqlite3.connect('account_database.db')
+                log_conn.row_factory = sqlite3.Row
+                log_cur = log_conn.cursor()
+                log_cur.execute("select * from login")
+                log_rows = log_cur.fetchall()
+                for log_row in log_rows:
+                    if log_row[0] == log_email:
                         flag = False
                         break
                 if not flag:
                     error = ' email already exists, try to register again.'
-                    conn.close()
+                    log_conn.close()
                 else:
                     session['logged_in'] = True
-                    cur.execute("INSERT INTO login (email, password, money) VALUES (?, ?, ?)", (email, password, 10000))
-                    conn.commit()
-                    conn.close()
+                    log_cur.execute("INSERT INTO login (email, password, money) VALUES (?, ?, ?)",
+                                    (email, password, 10000))
+                    log_conn.commit()
+                    log_conn.close()
                     return redirect(url_for('homepage'))
     else:
         logout()
@@ -260,9 +271,7 @@ def charge_balance():
         log_conn = sqlite3.connect("account_database.db")
         log_cur = log_conn.cursor()
         log_cur.execute("select * from login")
-        print(email, type(email))
-        print(log_cur.fetchall())
-        log_cur.execute("UPDATE login SET money = {0} WHERE email = {1}"
+        log_cur.execute("UPDATE login SET money = '{}' WHERE email = '{}'"
                         .format(int(balance)+int(amount), email))
         log_conn.commit()
         log_conn.close()
@@ -296,7 +305,7 @@ def shopping():
         quantity = request.form['quantity']
         if len(rows) != 0:
             for row in rows:
-                if row[0] == product and int(row[1]) >= int(quantity) > 0:
+                if row[0] == product and int(row[1]) >= int(quantity) > 0 and email in rows:
                     shop_conn = sqlite3.connect("shopping_database.db")
                     shop_conn.row_factory = sqlite3.Row
                     shop_cur = shop_conn.cursor()
@@ -318,15 +327,15 @@ def shopping():
                         if str(log_row[0]) == str(email):
                             if int(log_row[2])-(int(price) * int(quantity)) < 0:
                                 break
-                            log_cur.execute("UPDATE login SET money = {0} WHERE money = {1}"
-                                            .format(int(log_row[2]) - (int(price) * int(quantity)), log_row[2]))
+                            log_cur.execute("UPDATE login SET money = '{}' WHERE email = '{}'"
+                                            .format(int(log_row[2])-(int(price)*int(quantity)), email))
                             log_conn.commit()
                             log_conn.close()
                             if int(count) - int(quantity) == 0:
                                 shop_conn.execute("DELETE FROM shopping")
                             else:
-                                shop_cur.execute("UPDATE shopping SET num = {0} WHERE num = {1}"
-                                                 .format(int(count) - int(quantity), int(count)))
+                                shop_cur.execute("UPDATE shopping SET num = '{}' WHERE email = '{}'"
+                                                 .format(int(count)-int(quantity), email))
                             shop_conn.commit()
                             shop_conn.close()
                             return render_template("order.html")
@@ -403,6 +412,7 @@ def celebrity_face_recognition():
         return render_template("celebrity_face_recognition.html", error=error, response=json.loads(response.text)["faces"][0]["celebrity"]["value"])
     except AttributeError:
         return render_template("celebrity_face_recognition.html", error=error, response=response)
+
 
 if __name__ == '__main__':
     app.run()
