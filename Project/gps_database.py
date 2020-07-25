@@ -13,12 +13,12 @@ while True:
 
     time.sleep(1)
 
-    now = '{0}-{1}-{2}'.format(date.year, date.month, date.day)
+    period = "{0}-{1}-{2}".format(date.year, date.month, date.day)
 
     with conn.cursor() as curs:
         sql = "insert into gps values (%s, %s, %s, %s)"
-        curs.execute(sql, (id, now, latitude, longitude))
+        curs.execute(sql, (id, period, latitude, longitude))
         conn.commit()
-        print("\n정보 입력에 성공했습니다.\n")
+        print("\Information was inputted successfully.\n")
 
     id += 1
