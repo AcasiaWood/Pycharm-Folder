@@ -29,9 +29,14 @@ path = 'img/'
 file_list = os.listdir(path)
 
 for file in file_list:
-    image = cv2.imread(path+file)
-    cv2.imshow('image', image)
-    os.remove(path+file)
+    image = cv2.imread(path + file)
+    height, width, _ = image.shape
+    if height > 224 or width > 224:
+        src = cv2.resize(image, dsize=(224, 224), interpolation=cv2.INTER_AREA)
+        cv2.imwrite(path + file, src)
+        cv2.imshow('image', src)
+    else:
+        cv2.imshow('image', image)
     cv2.waitKey(0)
 
 cv2.destroyAllWindows()
