@@ -113,7 +113,6 @@ class nkModel(object):
                 return losses, top1
 
     def val(self, epoch, train_losses, train_accs):
-
         self.model.eval()
 
         val_losses = AverageMeter()
