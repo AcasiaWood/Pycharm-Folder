@@ -6,7 +6,7 @@ user = getpass.getuser()
 
 path = "/home/" + user + "/다운로드/"
 
-file = open("document/list.txt", 'w')
+file = open("document/list", 'w')
 file.write("filename,label\n")
 
 for d1 in os.listdir("/home/" + user + "/다운로드/"):
