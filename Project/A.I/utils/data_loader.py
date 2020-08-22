@@ -10,8 +10,9 @@ class NkDataSet(Dataset):
 
     def __init__(self, file_path):
         self.trans = transforms.Compose([transforms.RandomHorizontalFlip(),
-                                         transforms.ToTensor()
-                                        ])
+                                         transforms.ToTensor(),
+                                         transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                                              std=[0.229, 0.224, 0.225])])
         self.to_tensor = transforms.ToTensor()
         self.data_info = pd.read_csv(file_path, header=None)
         self.image_arr = np.asarray(self.data_info.iloc[:, 0][1:])
