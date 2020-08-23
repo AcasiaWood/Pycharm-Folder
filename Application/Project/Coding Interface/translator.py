@@ -10,10 +10,11 @@ with open('source.txt', 'r', encoding='utf8') as file:
     srcText = file.read()
 
 print("Language: {}".format(language))
-text = input("Language: ")
+src = input("Language: ")
+tar = input("Language: ")
 
 encText = urllib.parse.quote(srcText)
-data = "source=ko&target="+text+"&text=" + encText
+data = "source=" + src + "&target=" + tar + "&text=" + encText
 url = "https://openapi.naver.com/v1/papago/n2mt"
 request = urllib.request.Request(url)
 request.add_header("X-Naver-Client-Id", client_id)
@@ -29,7 +30,7 @@ if rescode == 200:
     from pprint import pprint
     pprint(res)
 
-    with open('translate.txt', 'w', encoding='utf8') as f:
-        f.write(res['message']['result']['translatedText'])
+    with open('translation.txt', 'w', encoding='utf8') as file:
+        file.write(res['message']['result']['translatedText'])
 else:
     print("Error Code: " + rescode)
