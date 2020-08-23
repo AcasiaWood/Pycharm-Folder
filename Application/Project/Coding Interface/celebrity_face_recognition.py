@@ -1,7 +1,7 @@
 import requests
 
-client_id = "No ID was entered to protect personal information."
-client_secret = "No password was entered to protect personal information."
+client_id = "privacy"
+client_secret = "privacy"
 
 url = "https://openapi.naver.com/v1/vision/celebrity"
 
