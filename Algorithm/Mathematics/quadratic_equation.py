@@ -5,7 +5,7 @@ print('When calculated, the irrational square root is expressed as √.')
 
 formula = b ** 2 - 4 * a * c
 
-if b ** 2 - 4 * a * c < 0:
+if formula < 0:
     print('Impossible to calculate.')
 else:
     if math.sqrt(formula) ** 2 == formula:
