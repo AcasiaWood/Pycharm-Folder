@@ -43,7 +43,6 @@ for i in range(len(mentors)):
     else:
         scores[i] += 5
 
-
 for i in range(10):
     for j in range(len(members)-1):
         if scores[j] > scores[j + 1]:
