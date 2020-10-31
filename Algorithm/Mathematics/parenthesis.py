@@ -1,9 +1,11 @@
-def check_parenthesis(parenthesis_string):
+# Baekjoon
+
+def check(string):
     stack = []
-    for i in range(len(parenthesis_string)):
-        if parenthesis_string[i] == '(':
-            stack.append(parenthesis_string[i])
-        elif parenthesis_string[i] == ')':
+    for i in range(len(string)):
+        if string[i] == '(':
+            stack.append(string[i])
+        elif string[i] == ')':
             try:
                 stack.pop()
             except IndexError:
@@ -15,9 +17,10 @@ def check_parenthesis(parenthesis_string):
 
 case = int(input())
 result = []
+
 while case:
     parenthesis = str(input())
-    result.append(check_parenthesis(parenthesis))
+    result.append(check(parenthesis))
     case -= 1
 
 for i in result:
