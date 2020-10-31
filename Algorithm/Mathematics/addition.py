@@ -1,12 +1,22 @@
-result = [[], [], [], [], []]
-add = 0
-for i in range(0, 5):
-    a, b, c, d = map(int, input().split())
-    add = a + b + c + d
-    result[i].append(add)
-print(result)
-max_value = result[0]
-for j in range(0, len(result)):
-    if max_value < result[j]:
-        max_value = result[j]
-print(max[0])
+def addition(a, b):
+    return a + b
+
+
+def subtraction(a, b):
+    return abs(a - b)
+
+
+def multiplication(a, b):
+    return a * b
+
+
+def division(a, b):
+    return a / b
+
+
+x, y = map(int, input().split())
+
+print(addition(x, y))
+print(subtraction(x, y))
+print(multiplication(x, y))
+print(division(x, y))
