@@ -1,13 +1,14 @@
-def factorial_function(a, b, value):
+def factorial(a, b, value):
     if a - b > 0:
         a -= b
         value *= a
-        return factorial_function(a, b, value)
+        return factorial(a, b, value)
     else:
         return value
 
+
 formula = str(input())
-factorial = formula.count('!')
+cnt = formula.count('!')
 number = int(formula.split('!')[0])
-result = factorial_function(a=number, b=factorial, value=number)
+result = factorial(a=number, b=cnt, value=number)
 print(result)
