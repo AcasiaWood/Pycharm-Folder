@@ -7,6 +7,7 @@ mentors = [['Male', '26', 'Mathematics', 'Debate'], ['Male', '30', 'Science', 'R
 majors = {'Mathematics': 10, 'Science': 9, 'History': 8, 'English': 11, 'Moral': 9, 'Literature': 10}
 hobbies = {'Sports': 11, 'Coding': 13, 'Debate': 12, 'Cooking': 11, 'Crafts': 13, 'Reading': 12}
 scores = [0, 0, 0, 0, 0]
+percentage = [1, 0.1, 0.2, 0.3]
 
 for i in range(len(mentors)):
     if gender == mentors[i][0]:
@@ -18,16 +19,10 @@ ages = []
 for i in range(len(mentors)):
     ages.append(abs(int(age) - int(mentors[i][1])))
 
-if 20 <= min(ages) < 30:
-    scores[ages.index(min(ages))] += min(ages)
-elif 30 <= min(ages) < 40:
-    scores[ages.index(min(ages))] += (min(ages) * 0.1)
-elif 40 <= min(ages) < 50:
-    scores[ages.index(min(ages))] += (min(ages) * 0.2)
-elif 50 <= min(ages) < 60:
-    scores[ages.index(min(ages))] += (min(ages) * 0.3)
-elif min(ages) >= 60:
-    scores[ages.index(min(ages))] += (min(ages) * 0.5)
+for i in range(20, 51, 10):
+    if i <= min(ages) < i + 10:
+        scores[ages.index(min(ages))] += (min(ages) * percentage[i])
+        break
 
 for i in range(len(ages)):
     if min(ages) != ages[i]:
