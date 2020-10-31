@@ -1,7 +1,7 @@
 # Baekjoon
 
 m = int(input())
-card_list = list(input().split())
+card_list = list(map(int, input().split()))
 n = int(input())
 number_list = list(input().split())
 string = ''
