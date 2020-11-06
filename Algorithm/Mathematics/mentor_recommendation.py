@@ -1,4 +1,7 @@
 gender, age, major, hobby = map(str, input().split())
+gender = gender[0].upper() + gender[1:len(gender)]
+major = major[0].upper() + major[1:len(major)]
+hobby = hobby[0].upper() + hobby[1:len(hobby)]
 
 members = ['A', 'B', 'C', 'D', 'E']
 mentors = [['Male', '26', 'Mathematics', 'Debate'], ['Male', '30', 'Science', 'Reading'],
@@ -7,7 +10,7 @@ mentors = [['Male', '26', 'Mathematics', 'Debate'], ['Male', '30', 'Science', 'R
 majors = {'Mathematics': 10, 'Science': 9, 'History': 8, 'English': 11, 'Moral': 9, 'Literature': 10}
 hobbies = {'Sports': 11, 'Coding': 13, 'Debate': 12, 'Cooking': 11, 'Crafts': 13, 'Reading': 12}
 scores = [0, 0, 0, 0, 0]
-percentage = [1, 0.1, 0.2, 0.3]
+percentage = [2, 1.5, 1, 0.5]
 
 for i in range(len(mentors)):
     if gender == mentors[i][0]:
@@ -19,9 +22,14 @@ ages = []
 for i in range(len(mentors)):
     ages.append(abs(int(age) - int(mentors[i][1])))
 
-for i in range(20, 51, 10):
-    if i <= min(ages) < i + 10:
-        scores[ages.index(min(ages))] += (min(ages) * percentage[i])
+for i in range(20, 41, 10):
+    if i <= int(age) <= i + 10:
+        i = int(i / 10) - 1
+        if int(min(age)) == 0:
+            value = 5
+        else:
+            value = int(min(age))
+        scores[ages.index(min(ages))] += (value * percentage[i])
         break
 
 for i in range(len(ages)):
@@ -48,6 +56,6 @@ for i in range(10):
             members[j] = members[j + 1]
             members[j + 1] = member
 
-print("Mentor: {}".format(members[scores.index(max(scores))]))
+print("Mentor: {}".format(members[len(members) - 1]))
 print(members)
 print(scores)
