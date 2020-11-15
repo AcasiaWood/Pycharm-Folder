@@ -278,37 +278,37 @@ else:
 if s2 == 0:
     print("No subtraction problems presented\n")
 else:
-    print("Total addition problems presented: {}".format(sub))
+    print("Total subtraction problems presented: {}".format(sub))
     if drill:
         if sub_e == 0:
             print("# of extra attempts needed: {} (perfect!)\n".format(sub_e))
         else:
             print("# of extra attempts needed: {}\n".format(sub_e))
     else:
-        print("Correct addition problems: {} ({})\n".format(s2, (s2 / sub) * 100))
+        print("Correct subtraction problems: {} ({})\n".format(s2, (s2 / sub) * 100))
 
 if s3 == 0:
     print("No multiplication problems presented\n")
 else:
-    print("Total addition problems presented: {}".format(mul))
+    print("Total multiplication problems presented: {}".format(mul))
     if drill:
         if mul_e == 0:
             print("# of extra attempts needed: {} (perfect!)\n".format(mul_e))
         else:
             print("# of extra attempts needed: {}\n".format(mul_e))
     else:
-        print("Correct addition problems: {} ({})\n".format(s3, (s3 / mul) * 100))
+        print("Correct multiplication problems: {} ({})\n".format(s3, (s3 / mul) * 100))
 
 if s4 == 0:
     print("No division problems presented\n")
 else:
-    print("Total addition problems presented: {}".format(div))
+    print("Total division problems presented: {}".format(div))
     if drill:
         if div_e == 0:
             print("# of extra attempts needed: {} (perfect!)\n".format(div_e))
         else:
             print("# of extra attempts needed: {}\n".format(div_e))
     else:
-        print("Correct addition problems: {} ({})\n".format(s4, (s4 / div) * 100))
+        print("Correct division problems: {} ({})\n".format(s4, (s4 / div) * 100))
 
 print("You got {} out of {} points!".format(s1 + s2 + s3 + s4, attempt))
