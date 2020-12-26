@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Garbage Separator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+     textarea {
+     width: 100%;
+     height: 50px;
+     padding: 12px 20px;
+     box-sizing: border-box;
+     border: 2px solid #ccc;
+     border-radius: 4px;
+     background-color: #f8f8f8;
+     font-size: 16px;
+     resize: none;
+     }
+    }
+    </style>
+</head>
+<body>
+    {% extends "homepage.html" %}
+
+{% block content %}
+    <h2>Separation</h2>
+    <form method="POST">
+        {% if result %}
+            <textarea readonly name="text">Type: {{ result }}</textarea>
+        {% else %}
+            <textarea readonly name="text"></textarea>
+        {% endif %}
+        <button type="submit" name="submit" class="btn btn-success" btn-lg>Capture</button>
+        {% if error %}
+            <br>
+            <p class="error"><strong>Error: </strong>{{ error }}</p>
+        {% endif %}
+    </form>
+{% endblock %}
+</body>
+</html>
