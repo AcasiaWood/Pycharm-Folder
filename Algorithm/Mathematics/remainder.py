@@ -16,4 +16,5 @@ for i in range(0, len(remainder_list)):
 for k in range(0, len(remainder_list)):
     if remainder_list[k] != '*':
         value = value + 1
+        
 print(value)
