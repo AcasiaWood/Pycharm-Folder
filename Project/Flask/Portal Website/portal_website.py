@@ -181,9 +181,7 @@ def analysis(route):
 
     try:
         return error, json.loads(response.text)["faces"][0]["celebrity"]["confidence"]
-    except AttributeError:
-        return error, False
-    except KeyError:
+    except (AttributeError, KeyError):
         return error, False
 
 
@@ -219,11 +217,7 @@ def upload_file():
                 return redirect(url_for('homepage'))
             else:
                 return render_template('upload.html')
-        except FileNotFoundError:
-            return render_template('upload.html')
-        except IsADirectoryError:
-            return render_template('upload.html')
-        except PermissionError:
+        except (FileNotFoundError, IsADirectoryError, PermissionError):
             return render_template('upload.html')
     return render_template('upload.html')
 
