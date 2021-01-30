@@ -1,5 +1,6 @@
 import random
 
+
 def restart():
     while True:
         begin = []
