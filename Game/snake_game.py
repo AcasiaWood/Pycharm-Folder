@@ -21,22 +21,26 @@ pygame.display.set_caption('snake_game')
 # create the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+
 # define the rectangle
 def draw_background(screen):
     background = pygame.Rect((0, 0), (SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.draw.rect(screen, WHITE ,background)
+    pygame.draw.rect(screen, WHITE, background)
+
 
 def draw_block(screen, color, position):
     block = pygame.Rect(
-        (position[0]*BLOCK_SIZE, position[1]*BLOCK_SIZE),
+        (position[0] * BLOCK_SIZE, position[1] * BLOCK_SIZE),
         (BLOCK_SIZE, BLOCK_SIZE)
     )
     pygame.draw.rect(screen, color, block)
 
+
 def draw_lines(screen, color):
-    for i in range(int(SCREEN_WIDTH/20)):
-        pygame.draw.line(screen, color, (i*BLOCK_SIZE, 0), (i*BLOCK_SIZE, SCREEN_HEIGHT), 1)
-        pygame.draw.line(screen, color, (0, i*BLOCK_SIZE), (SCREEN_WIDTH, i*BLOCK_SIZE), 1)
+    for i in range(int(SCREEN_WIDTH / 20)):
+        pygame.draw.line(screen, color, (i * BLOCK_SIZE, 0), (i * BLOCK_SIZE, SCREEN_HEIGHT), 1)
+        pygame.draw.line(screen, color, (0, i * BLOCK_SIZE), (SCREEN_WIDTH, i * BLOCK_SIZE), 1)
+
 
 # snake`s arrow
 class Offset:
@@ -45,6 +49,7 @@ class Offset:
     LEFT = [-1, 0]
     UP = [0, -1]
     DOWN = [0, 1]
+
 
 # define the color and location
 class Snake:
@@ -79,7 +84,9 @@ class Snake:
         x_diff = end_tail[0] - front_tail[0]
         y_diff = end_tail[1] - front_tail[1]
         self.positions.append([end_tail[0] + x_diff, end_tail[1] + y_diff])
+
     pass
+
 
 # define the color and location
 class Apple:
@@ -90,7 +97,9 @@ class Apple:
 
     def draw(self):
         draw_block(screen, self.color, self.position)
+
     pass
+
 
 # define the snake game
 class Game:
@@ -141,7 +150,9 @@ class Game:
             if self.crash():
                 break
             self.draw()
+
     pass
+
 
 game = Game(
     Snake(GREEN, [9, 9], Offset.RIGHT),
